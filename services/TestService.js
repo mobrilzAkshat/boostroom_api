@@ -1,17 +1,20 @@
-const { execute } = require("../config/databases/queryWrapperPg");
+const { execute } = require('../config/databases/queryWrapperPg');
 
-
-class TestService{
+class TestService {
     async test() {
-        const query = 'select * from api_game';
-        const result = await execute(query, [])
-        console.log(result, "result form service file")
-        if (result.length === 0){
-            return {"status": 400, "success": false, message:"something went wrong"}
-        }else{
-            return {"status": 200, "success": true, message:"game data fetched successfully"}
+        const query = 'SELECT * FROM api_game';
+        try {
+            const result = await execute(query, []);
+            if (result.length === 0) {
+                return { "status": 400, "success": false, message: "No game data found" };
+            } else {
+                return { "status": 200, "success": true, message: "Game data fetched successfully", data: result };
+            }
+        } catch (error) {
+            console.error("Error in TestService:", error);
+            throw error;
         }
     }
 }
 
-module.exports = new TestService()
+module.exports = new TestService();
