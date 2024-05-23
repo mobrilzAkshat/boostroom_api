@@ -7,7 +7,7 @@ class TestController {
             return result.success ? response.status(200).json(result) : response.status(400).json(result);
         } catch (error) {
             console.error("Error in TestController:", error);
-            return response.status(500).json({ success: false, message: "Internal Server Error" });
+            return response.status(500).json({ success: false, message: `Internal Server Error`, err:error });
         } finally {
             next();
         }
