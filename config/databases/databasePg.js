@@ -11,21 +11,12 @@ const client = new Client({
     connectionTimeoutMillis: 10000, // 5 seconds connection timeout
 });
 
-client.connect(err=>{
-    if(!err){
-        console.log("connection successfull")
-    }else{
-        console.log("something went wrong in connectionn",err)
+client.connect(err => {
+    if (!err) {
+        console.log("Connection successful to PostgreSQL");
+    } else {
+        console.error("Error connecting to PostgreSQL:", err);
     }
 });
-
-client.query('select * from api_game', (err, result)=>{
-    if(!err){
-        console.log(result.rows)
-    }else{
-        console.log("error occured", err)
-    }
-    client.end()
-})
 
 module.exports = { client };

@@ -1,32 +1,20 @@
-// const { pool } = require('./databasePg');
+const { execute } = require("../config/databases/queryWrapperPg");
 
-// const getConnection = async () => {
-//     return new Promise((resolve, reject) => {
-//         pool.connect((err, client, release) => {
-//             if (err) {
-//                 reject(err);
-//             } else {
-//                 console.log("Connection established successfully");
-//                 resolve({ client, release });
-//             }
-//         });
-//     });
-// }
+class TestService {
+    async test() {
+        const query = 'SELECT * FROM api_game';
+        try {
+            const result = await execute(query, []);
+            if (result.length === 0) {
+                return { "status": 400, "success": false, message: "No game data found" };
+            } else {
+                return { "status": 200, "success": true, message: "Game data fetched successfully", data: result };
+            }
+        } catch (error) {
+            console.error("Error in TestService:", error);
+            throw error;
+        }
+    }
+}
 
-// exports.execute = async function(query, bindValuesArray) {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             const { client, release } = await getConnection();
-//             client.query(query, bindValuesArray, (err, result) => {
-//                 release(); // release the connection back to the pool
-//                 if (err) {
-//                     reject(err);
-//                 } else {
-//                     resolve(result);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// }
+module.exports = new TestService();
